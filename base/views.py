@@ -123,14 +123,15 @@ def logPage(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user=user)
-            _to = arg1.split()[-1]
-            if _to == 'submit':
-                return redirect('submit')
-            elif _to == 'vote':
-                if arg2 == 'p':
-                    return redirect('upvote', 'p', pk)
-                else:
-                    return redirect('upvote', 'c', pk)
+            if arg1 is not None:
+                _to = arg1.split()[-1]
+                if _to == 'submit':
+                    return redirect('submit')
+                elif _to == 'vote':
+                    if arg2 == 'p':
+                        return redirect('upvote', 'p', pk)
+                    else:
+                        return redirect('upvote', 'c', pk)
             return redirect('new')
         else:
             messages.error(request, "Username and password doesn't match")
@@ -155,20 +156,18 @@ def upvote(request, mod, pk):
     if not request.user.is_authenticated:
         arg1 = 'You have to be logged in to vote'
         return redirect(reverse('login_form')+f'?arg1={arg1}&arg2={mod}&pk={pk}')
-        # return redirect('login_form' , arg1="You have to be logged in to vote")
     if mod == 'p':
         post = Post.objects.get(id=pk)
-        post.upvote+=1
+        # post.upvote+=1
         post.up_users.add(request.user)
         post.save()
-        return redirect('home')
+        return redirect(request.META.get('HTTP_REFERER', '/'))
     else:
-        # print('hello')
         comment = Comment.objects.get(id=pk)
-        comment.upvote+=1
+        # comment.upvote+=1
         comment.up_users.add(request.user)
         comment.save()
-        return redirect('home')
+        return redirect(request.META.get('HTTP_REFERER', '/'))
     
 def dvote(request, mod, pk):
     if mod == 'p':
@@ -176,13 +175,13 @@ def dvote(request, mod, pk):
         post.upvote-=1
         post.up_users.remove(request.user)
         post.save()
-        return redirect('home')
+        return redirect(request.META.get('HTTP_REFERER', '/'))
     else:
         comment = Comment.objects.get(id=pk)
         comment.upvote-=1
         comment.up_users.remove(request.user)
         comment.save()
-        return redirect('home')
+        return redirect(request.META.get('HTTP_REFERER', '/'))
     
 
 def items(request):

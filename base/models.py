@@ -27,7 +27,7 @@ class Post(models.Model):
     body = models.TextField(max_length=200, null=True)
     created = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    upvote = models.IntegerField(default=0)
+    # upvote = models.IntegerField(default=0)
     up_users = models.ManyToManyField(User, related_name='upvoted_posts')
     
     def __str__(self):
@@ -42,7 +42,7 @@ class Comment(models.Model):
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, blank=True, null=True)
     body = models.TextField(max_length=200)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, default=1)
-    upvote = models.IntegerField(default=0)
+    # upvote = models.IntegerField(default=0)
     up_users = models.ManyToManyField(User, related_name='upvoted_comments')
 
     def __str__(self):
