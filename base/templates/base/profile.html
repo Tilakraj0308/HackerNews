@@ -1,0 +1,33 @@
+{% extends 'main.html' %}
+
+{% block content %}
+{% if user.id == request.user.id %}
+
+<div>
+<p>:|</p>
+</div>
+
+{% else %}
+<div>
+<table>
+    <tr>
+        <td>user:</td>
+        <td>{{user.username}}</td>
+    </tr>
+    <tr>
+        <td>created:</td>
+        <td>{{user.created}}</td>
+    </tr>
+    <tr>
+        <td>about</td>
+        <td>{{user.about}}</td>
+    </tr>
+</table>
+<a href="{% url 'userItems' %}?id={{user.username}}">submissions</a>
+<a href="">comments</a>
+<a href="">favourites</a>
+</div>
+
+{% endif %}
+
+{% endblock content %}

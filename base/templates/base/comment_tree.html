@@ -1,0 +1,20 @@
+
+<ul style="list-style: none;">
+    {% for comment in comments %}
+        <li>
+            <div>
+                <small><a href="" target="_blank">{{comment.user}}</a> | 
+                    {{comment.created|timesince}} ago|| {% if request.user not in comment.up_users.all %} <a href="{% url 'upvote' 'c' comment.id %}">Like</a>
+                    {% else %} <a href="{% url 'dvote' 'c' comment.id %}">Unlike</a>{% endif %}
+                </small>
+                <p>
+                     {{comment.body}}
+                </p>
+                <small>
+                    <a href="{% url 'items' %}?id={{comment.id}}&reply_to=comment">reply</a>
+                </small>
+            </div>
+                {% include "base/comment_tree.html" with comments=comment.comment_set.all %}
+        </li>
+    {% endfor %}
+</ul>

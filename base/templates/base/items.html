@@ -1,0 +1,34 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div>
+    {% if post is not None %}
+        <p>
+            {{post.title}}
+            <small><a href="{{post.url}}" target="_blank">({{post.url}})</a>
+            </small>
+        </p>
+        <small>Created {{post.created|timesince}} ago by {{post.user}}| {{post.up_users.count}} upvotes | 
+            <a href="{% url 'items' %}?id={{post.id}}&reply_to=post">{{post.comment_set.count}}comments </a>
+            | {% if request.user not in post.up_users.all %} <a href="{% url 'upvote' 'p' post.id%}">Like</a>
+            {% else %} <a href="{% url 'dvote' 'p' post.id%}">Unlike</a>{% endif %}
+        </small>
+    {% else %}
+        <p>
+            <small><a href="" target="_blank">{{parent_comment.user}}</a> | 
+                {{parent_comment.created|timesince}} ago| 
+            </small>
+            <p>
+                {{parent_comment.body}}
+            </p>
+        </p>
+    {% endif %}
+</div>
+
+<div>
+    {% include 'base/comment_form.html' %}
+</div>
+
+{% include 'base/comment_tree.html' with comments=comments %}
+{% endblock content %}

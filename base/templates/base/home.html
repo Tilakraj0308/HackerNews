@@ -1,0 +1,23 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<p>Home</p>
+<ol start="{{ol_start}}">
+    {% for post in curr_obj %}
+    <li>
+        <p>{{post.0.title}}
+        <small><a href="{{post.0.url}}" target="_blank">({{post.0.url}})</a>
+        </small>
+        </p>
+        <small>Created {{post.0.created|timesince}} ago by <a href="{% url 'user' %}?id={{post.0.user.username}}">{{post.0.user}}</a>| {{post.0.up_users.count}} upvotes | 
+            <a href="{% url 'items' %}?id={{post.0.id}}&reply_to=post">{{post.0.comment_set.count}} comments </a>
+            | {% if request.user not in post.0.up_users.all %} <a href="{% url 'upvote' 'p' post.0.id%}">Like</a>
+            {% else %} <a href="{% url 'dvote' 'p' post.0.id%}">Unlike</a>{% endif %}
+        </small>
+    </li>
+    {% endfor %}
+</ol>
+{% if p < total_pages %}
+    <a href="{% url 'home' %}?p={{p|add:1}}">next</a>
+{% endif %}
+{% endblock content %}

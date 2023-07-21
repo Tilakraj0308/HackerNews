@@ -1,0 +1,26 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<ol start="{{ol_start}}">
+{% for comment in curr_obj %}
+    <li>
+        <small>A comment by {{comment.user}} {{comment.created|timesince}} ago | 
+            {% if comment.parent %}
+            <a href="{% url 'items' %}?id={{comment.parent.id}}&reply_to=comment">parent</a> | 
+            {% else %}
+            <a href="{% url 'items' %}?id={{comment.post.id}}&reply_to=post">parent_post</a> | 
+            {% endif %}
+            on <a href="{% url 'items' %}?id={{comment.id}}&reply_to=post">{{comment.post.title}}</a>
+        </small>
+        <p style="font-size: large;">{{comment.body|truncatewords:50}}</p>
+    </li>
+{% endfor %}
+
+</ol>
+
+{% if p < total_pages %}
+<a href="{% url 'comment' %}?p={{p|add:1}}">next</a>
+{% endif %}
+
+{% endblock content %}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker news</title>
+    <style>
+        .navbar {
+          background-color: #f1f1f1;
+          overflow: hidden;
+        }
+        
+        .navbar a {
+          float: left;
+          display: block;
+          padding: 8px 16px;
+          text-decoration: none;
+          color: #333;
+        }
+        
+        .navbar a:hover {
+          background-color: #ddd;
+        }
+      </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% block content %}
+
+
+    {% endblock content %}
+</body>
+</html>

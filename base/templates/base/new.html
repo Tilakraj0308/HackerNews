@@ -1,0 +1,23 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<p>New</p>
+<ol start="{{ol_start}}">
+    {% for post in curr_obj %}
+    <li>
+        <p>{{post.title}}
+        <small><a href="{{post.url}}" target="_blank">({{post.url}})</a>
+        </small>
+        </p>
+        <small>Created {{post.created|timesince}} ago by {{post.user}}| {{post.up_users.count}} upvotes | 
+            <a href="{% url 'items' %}?id={{post.id}}&reply_to=post">{{post.comment_set.count}} comments </a>
+            | {% if request.user not in post.up_users.all %} <a href="{% url 'upvote' 'p' post.id%}">Like</a>
+            {% else %} <a href="{% url 'dvote' 'p' post.id%}">Unlike</a>{% endif %}
+        </small>
+    </li>
+    {% endfor %}
+</ol>
+{% if p < total_pages %}
+    <a href="{% url 'new' %}?p={{p|add:1}}">next</a>
+{% endif %}
+{% endblock content %}

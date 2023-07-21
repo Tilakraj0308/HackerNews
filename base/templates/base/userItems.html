@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div>
+        <p>
+            <small><a href="" target="_blank">{{parent_comment.user}}</a> | 
+                {{parent_comment.created|timesince}} ago| 
+            </small>
+            <p>
+                {{parent_comment.body}}
+            </p>
+        </p>
+</div>
+
+<div>
+    {% include 'base/comment_form.html' %}
+</div>
+
+{% include 'base/comment_tree.html' with comments=comments %}
+
+{% endblock content %}

@@ -1,0 +1,37 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<p>Thread</p>
+
+<ol start="{{ol_start}}">
+    {% for thread in curr_obj %}
+    <li>
+
+        <!-- <p>{{thread}}</p> -->
+        <!-- <a href="{{thread.url}}" target="_blank">{{thread.url}}</a><br>
+        <small>Created {{thread.created|timesince}} ago by {{thread.user}}</small> -->
+
+        {% if thread.getType == "Post" %}
+            <small>A post by {{thread.user}} {{thread.created|timesince}} ago | 
+                on <a href="{% url 'items' %}?id={{thread.id}}&reply_to=post">{{thread.title}}</a>
+            </small>
+            <p style="font-size: large;">{{thread.body|truncatewords:50}}</p>
+        {%  else %}
+            <small>A comment by {{thread.user}} {{thread.created|timesince}} ago | 
+                {% if thread.parent %}
+                <a href="{% url 'items' %}?id={{thread.parent.id}}&reply_to=comment">parent</a> | 
+                {% else %}
+                <a href="{% url 'items' %}?id={{thread.post.id}}&reply_to=post">parent_post</a> | 
+                {% endif %}
+                on <a href="{% url 'items' %}?id={{thread.id}}&reply_to=post">{{thread.post.title}}</a>
+            </small>
+            <p style="font-size: large;">{{thread.body|truncatewords:50}}</p>
+        {% endif %}
+
+    </li>
+    {% endfor %}
+</ol>
+{% if p < total_pages %}
+    <a href="{% url 'thread' %}?p={{p|add:1}}">next</a>
+{% endif %}
+{% endblock content %}

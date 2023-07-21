@@ -1,0 +1,36 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<p>{{arg1}}</p>
+<!-- Login form -->
+<div>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <label for="uname">Username:</label>
+        <input type="text" id="uname" name="username" placeholder="Enter username" autofocus/><br>
+
+        <label for="pass">Password:</label>
+        <input type="password" id="pass" name="password"/><br>
+
+        <input type="submit" value="Login">
+
+    </form>
+</div>
+
+<!-- Register form -->
+
+<div>
+    <form action="/register/" method="POST">
+        {% csrf_token %}
+        <label for="uname">Username:</label>
+        <input type="text" id="uname" name="username" placeholder="Enter username" required/><br>
+
+        <label for="pass">Password:</label>
+        <input type="password" id="pass" name="password" required/><br>
+
+        <input type="submit" value="Create account">
+
+    </form>
+</div>
+
+{% endblock content %}
