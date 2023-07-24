@@ -15,4 +15,5 @@ urlpatterns=[
     path('item/', views.items, name='items'),
     path('user/', views.profile, name='user'),
     path('userItems/', views.getprofileItems, name='userItems'),
+    path('deleteComm/', views.deleteComment, name='deleteComment'),
 ]

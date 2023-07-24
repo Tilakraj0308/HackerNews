@@ -21,7 +21,7 @@ def calculate_score(votes, submission_time, comments):
 def rank_posts(posts):
     ranked_posts = []
     for post in posts:
-        score = calculate_score(post.upvote, post.created, post.comment_set.count())
+        score = calculate_score(post.up_users.count(), post.created, post.comment_set.count())
         ranked_posts.append((post, score))
     ranked_posts.sort(key=lambda x: x[1], reverse=True)
     return ranked_posts
@@ -172,7 +172,7 @@ def upvote(request, mod, pk):
 def dvote(request, mod, pk):
     if mod == 'p':
         post = Post.objects.get(id=pk)
-        post.upvote-=1
+        # post.upvote-=1
         post.up_users.remove(request.user)
         post.save()
         return redirect(request.META.get('HTTP_REFERER', '/'))
@@ -212,6 +212,9 @@ def items(request):
                 post = comment.post
             )
             comment.save()
+            comments = Comment.objects.filter(post=post, parent=None)
+            context = {"comments" : comments, "post" : post}
+            return render(request, 'base/items.html', context)
         comments = Comment.objects.filter(post=post, parent=comment)
         context={"comments" : comments, "parent_comment" : comment}
     return render(request, 'base/items.html', context)
@@ -239,3 +242,9 @@ def getprofileItems(request):
         comments = Comment.objects.filter(user=user)
         context = {"obj":obj, "comments":comments}
     return render(request, 'base/userItems.html', context)
+
+def deleteComment(request):
+    pk = request.GET.get('id')
+    comment = Comment.objects.get(id=pk)
+    comment.delete()
+    return redirect(request.META.get('HTTP_REFERER', '/'))

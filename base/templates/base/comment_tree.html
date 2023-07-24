@@ -4,8 +4,8 @@
         <li>
             <div>
                 <small><a href="" target="_blank">{{comment.user}}</a> | 
-                    {{comment.created|timesince}} ago|| {% if request.user not in comment.up_users.all %} <a href="{% url 'upvote' 'c' comment.id %}">Like</a>
-                    {% else %} <a href="{% url 'dvote' 'c' comment.id %}">Unlike</a>{% endif %}
+                    {{comment.created|timesince}} ago| {% if request.user not in comment.up_users.all %} <a href="{% url 'upvote' 'c' comment.id %}">Like</a>
+                    {% else %} <a href="{% url 'dvote' 'c' comment.id %}">Unlike</a>{% endif %} | {% if request.user == comment.user %} <a href = "{% url 'deleteComment' %}?id={{comment.id}}">Delete</a>{% endif %}
                 </small>
                 <p>
                      {{comment.body}}
